@@ -1,12 +1,11 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Lexer {
     ArrayList<SymbolTable> Symboltable;
     ArrayList<String> keywords;
     FileReader fileR;
+    Reader reader;
     File file;
     public Lexer(String filename) throws FileNotFoundException {
         Symboltable = new ArrayList<SymbolTable>();
@@ -14,12 +13,46 @@ public class Lexer {
         keywords.add("if");
         keywords.add("else");
         keywords.add("while");
-        keywords.add("for");
         keywords.add("then");
         keywords.add("int");
         keywords.add("float");
-        file=new File(filename);
+
+        initialize(filename);
+
+    }
+    public void initialize(String f) throws FileNotFoundException {
+        file=new File(f);
         fileR= new FileReader(file);
+        InputStream in = new FileInputStream(file);
+        reader = new InputStreamReader(in);
+    }
+
+    public Token nextToken()throws Exception{
+        int r;
+        int state=0;
+        String lessema="";
+        while ((r = reader.read()) != -1) {
+            char c = (char) r;
+            switch(state){
+                case 0:
+                    if (c != ' ' || c != '\n'){
+                        state=1;
+                        break;
+                    }else{
+                        if(!lessema.equals("")){
+
+                        }
+                    }
+                    break;
+                case 1:
+                    if(Character.isLetter(c)){
+                        lessema+=c;
+                        break;
+
+
+                }
+            }
+        }
 
     }
 

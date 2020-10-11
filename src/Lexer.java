@@ -31,6 +31,7 @@ public class Lexer {
         int r;
         int state=0;
         String lessema="";
+
         while ((r = reader.read()) != -1) {
             char c = (char) r;
 
@@ -40,10 +41,6 @@ public class Lexer {
                     if (c != ' ' || c != '\n'){
                         state=1;
                         break;
-                    }else{
-                        if(!lessema.equals("")){
-
-                        }
                     }
                     break;
             }
@@ -68,6 +65,13 @@ public class Lexer {
                         return installID(lessema);
                     }
                     default: break;
+
+            }
+
+            /* ##### Inizio separatori ####*/
+
+            //Parentesi tonda aperta
+            switch(state) {
 
             }
 

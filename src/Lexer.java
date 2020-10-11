@@ -33,6 +33,8 @@ public class Lexer {
         String lessema="";
         while ((r = reader.read()) != -1) {
             char c = (char) r;
+
+            //Spazio, tab, new line
             switch(state){
                 case 0:
                     if (c != ' ' || c != '\n'){
@@ -44,14 +46,31 @@ public class Lexer {
                         }
                     }
                     break;
+            }
+
+            switch (state) {
                 case 1:
                     if(Character.isLetter(c)){
-                        lessema+=c;
+                        state = 2;
+                        lessema += c;
                         break;
+                    }
+                    state = 12; //va modificato, deve passare al prossimo pattern (switch)
+                    break;
 
+                case 2:
+                    if(Character.isLetterOrDigit(c)){
+                        lessema += c;
+                        state = 11;
+                        retrack();//fa ritornare al carattere precedente
+                        return installID(lessema);
+                    }
 
-                }
+                    default: break;
+
             }
+
+
         }
 
     }

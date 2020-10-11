@@ -34,7 +34,6 @@ public class Lexer {
 
         while ((r = reader.read()) != -1) {
             char c = (char) r;
-            state = 0;
 
             //Spazio, tab, new line
             switch(state){
@@ -119,8 +118,37 @@ public class Lexer {
             }
             /* ##### Fine separatori ####*/
 
+            /* ##### Assegnazione <-- e operatori relazionali < <= >= > == != #### */
+            switch(state) {
+                case 9:
+                    if (c =='<') {
+                        lessema = c;
+                        state=10;
+                    } else {
+                        state= //impostarlo al prossimo case o pattern (switch) oppure riportarlo a zero in modo che ricominci dagli spazi
+                    }
+                    break;
+                case 10:
+                    if(c == '-') {
+                        lessema+=c;
+                        state=11;
+                    } else {
+                        retract();
+                        state= 12; //Significa che non è l'assegnazione e può essere uno degli operatori relazionali
+                    }
+                    break;
+                case 11:
+                    if(c == '-') {
+                        lessema+=c;
+                        return new Token('assign', lessema);
+                    } else {
+                        return new Token('notDefined', lessema); //Perchè se arriva fin qui, significa che nel lessema abbiamo <- ma non esiste un lessema <- quindi da errore
+                    }
+                    break;
 
+                case 12: //Da implementare
 
+            }
 
 
 
@@ -132,6 +160,8 @@ public class Lexer {
         }
 
     }
+
+
 
 
 }

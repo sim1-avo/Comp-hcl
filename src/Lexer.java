@@ -48,6 +48,7 @@ public class Lexer {
                     break;
             }
 
+            //identificatori
             switch (state) {
                 case 1:
                     if(Character.isLetter(c)){
@@ -60,15 +61,17 @@ public class Lexer {
 
                 case 2:
                     if(Character.isLetterOrDigit(c)){
-                        lessema += c;
-                        state = 11;
-                        retrack();//fa ritornare al carattere precedente
+                        lessemq += c;
+                    }else{
+                        state = 11; //passa al successivo pattern
+                        retrack(); //torna indietro di un carattere dato che siamo andati di un carattere in avanti
                         return installID(lessema);
                     }
-
                     default: break;
 
             }
+
+
 
 
         }

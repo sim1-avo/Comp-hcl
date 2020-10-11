@@ -133,7 +133,7 @@ public class Lexer {
                         lessema+=c;
                         state=11;
                     } else {
-                        retract();
+                        retrack();
                         state= 12; //Significa che non è l'assegnazione e può essere uno degli operatori relazionali
                     }
                     break;

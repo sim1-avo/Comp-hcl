@@ -133,7 +133,7 @@ public class Lexer {
                         lessema+=c;
                         state=11;
                     } else {
-                        retrack();
+                        retract();
                         state= 12; //Significa che non è l'assegnazione e può essere uno degli operatori relazionali
                     }
                     break;
@@ -159,27 +159,6 @@ public class Lexer {
 
         }
 
-    }
-
-    //Dato che usiamo il pattern dell'identificatore anche per le keys, va usato install id ogni volta che si individua un id
-    //per verificare se sia una key. Nel caso non sia una key viene ritornato il lessema come un id
-    //Va modificato perchè è lo stub fornito dal prof
-    private Token installID(String lessema){
-        Token token;
-
-        if(stringTable.containsKey(lessema))
-            return symbolTable.get(lessema);
-        else{
-            token =  new Token("ID", lessema);
-            stringTable.put(lessema, token);
-            return token;
-        }
-    }
-
-    //Da implementare, torna indietro di un carattere, perche in alcuni casi il compilatore deve andare in avanti
-    //di un carattere per capire quando termina il lessema
-    private void retrack(){
-        // fa il retract nel file di un carattere
     }
 
 

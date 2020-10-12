@@ -5,19 +5,19 @@ import java.util.ArrayList;
 
 public class Lexer {
     ArrayList<Token> Tokentable;
-    ArrayList<String> keywords;
+    ArrayList<Token> keywords;
     FileReader fileR;
     Reader reader;
     File file;
     public Lexer(String filename) throws FileNotFoundException {
         Tokentable = new ArrayList<Token>();
         keywords= new ArrayList<String>();
-        keywords.add("if");
-        keywords.add("else");
-        keywords.add("while");
-        keywords.add("then");
-        keywords.add("int");
-        keywords.add("float");
+        keywords.add(new Token("if","if"));
+        keywords.add(new Token("else","else"));
+        keywords.add(new Token("while","while"));
+        keywords.add(new Token("then","then"));
+        keywords.add(new Token("int","int"));
+        keywords.add(new Token("float","float"));
 
         initialize(filename);
 
@@ -136,23 +136,18 @@ public class Lexer {
                         state=11;
                     }if(c == '='){
                     lessema+=c;
-                    return new Token("lessequal", lessema);
+                    return new Token("relop","lessequal");
 
-                } else {
-<<<<<<< HEAD
-                    retrack();
-                    state= 12; //Significa che non è l'assegnazione e può essere uno degli operatori relazionali
-=======
-                    retracK();
-                    return new Token("less", lessema);
-                    //state= 12; //Significa che non è l'assegnazione e può essere uno degli operatori relazionali
->>>>>>> Lexer switch operatori relazionali e metodo installID
-                }
-                    break;
+                    } else {
+                        return new Token("relop","less");
+
+                    }
+                break;
+
                 case 11:
                     if(c == '-') {
                         lessema+=c;
-                        return new Token("assign", lessema);
+                        return new Token("relop","assign");
                     } else {
                         return new Token("notDefined", lessema); //Perchè se arriva fin qui, significa che nel lessema abbiamo <- ma non esiste un lessema <- quindi da errore
                     }
@@ -170,9 +165,9 @@ public class Lexer {
                 case 13:
                     if(c == '='){
                         lessema+=c;
-                        return new Token("greaterequal", lessema);
+                        return new Token("relop","greaterequal");
                     }else{
-                        return new Token("greater", lessema);
+                        return new Token("relop","greater");
                     }
                     break;
 
@@ -188,7 +183,7 @@ public class Lexer {
                 case 15:
                     if(c=='='){
                         lessema+=c;
-                        return new Token("equal", lessema);
+                        return new Token("relop","equal");
                     }else{
                         return new Token("notDefined", lessema); //Non assegno = all'assegnazione poichè per l'assegnazione abbiamo usato <--
                     }
@@ -206,7 +201,7 @@ public class Lexer {
                 case 17:
                     if(c == '='){
                         lessema+=c;
-                        return new Token("notequal", lessema);
+                        return new Token("relop","notequal");
                     }else{
                         return new Token("notDefined", lessema);
                     }
@@ -240,8 +235,8 @@ public class Lexer {
     private Token installID(String lessema){
         Token token;
         //Controllo se il lessema è una parola chiave
-        for(String kw:keywords){
-            if(lessema.equals(kw)){
+        for(Token kw:keywords){
+            if(lessema.equals(kw.getName())){
                 return kw;
             }else{
                 token =  new Token("ID", lessema);

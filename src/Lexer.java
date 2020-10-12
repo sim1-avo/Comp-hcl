@@ -9,7 +9,10 @@ public class Lexer {
     FileReader fileR;
     Reader reader;
     File file;
-    public Lexer(String filename) throws FileNotFoundException {
+    boolean retrack;
+    int r;
+
+    public Lexer(String filename) {
         Tokentable = new ArrayList<Token>();
         keywords= new ArrayList<String>();
         keywords.add(new Token("if","if"));
@@ -19,9 +22,11 @@ public class Lexer {
         keywords.add(new Token("int","int"));
         keywords.add(new Token("float","float"));
 
+        retrack= false;
         initialize(filename);
 
     }
+
     public void initialize(String f) throws FileNotFoundException {
         file=new File(f);
         fileR= new FileReader(file);
@@ -30,11 +35,17 @@ public class Lexer {
     }
 
     public Token nextToken()throws Exception{
-        int r;
         int state=0;
         String lessema="";
 
         while ((r = reader.read()) != -1) {
+
+            if (retrack == false) {
+                r=reader.read();
+            } else {
+                retrack = false;
+            }
+
             char c = (char) r;
 
             //Spazio, tab, new line
@@ -139,8 +150,7 @@ public class Lexer {
                     return new Token("relop","lessequal");
 
                     } else {
-                        return new Token("relop","less");
-
+                    if(c != '-') return new Token("relop","less");
                     }
                 break;
 
@@ -215,7 +225,7 @@ public class Lexer {
                         state = 19;
                         lessema = c;
                     }else{
-
+                        return new Token ("notDefined");
                     }
                     break;
 
@@ -223,6 +233,7 @@ public class Lexer {
                     if(Character.isDigit(c)){
                         lessema+=c;
                     }else{
+                        retrack();
                         return new Token("Number", lessema);
                     }
                     break;
@@ -249,8 +260,7 @@ public class Lexer {
 
 
         private void retrack(){
-
-
+            retrack = true;
         }
 
     }

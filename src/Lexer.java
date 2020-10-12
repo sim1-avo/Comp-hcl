@@ -1,20 +1,19 @@
-import jdk.nashorn.internal.parser.Token;
-
 import java.io.*;
 import java.util.ArrayList;
 
 public class Lexer {
-    ArrayList<Token> Tokentable;
+
     ArrayList<Token> keywords;
+    ArrayList<String> SymbolTable;
     FileReader fileR;
     Reader reader;
     File file;
     boolean retrack;
     int r;
 
-    public Lexer(String filename) {
-        Tokentable = new ArrayList<Token>();
-        keywords= new ArrayList<String>();
+    public Lexer(String filename) throws FileNotFoundException{
+        SymbolTable= new ArrayList<String>();
+        keywords= new ArrayList<Token>();
         keywords.add(new Token("if","if"));
         keywords.add(new Token("else","else"));
         keywords.add(new Token("while","while"));
@@ -129,13 +128,13 @@ public class Lexer {
                     else state=9;
                     break;
             }
-            /* ##### Fine separatori ####*/
+             /*##### Fine separatori ####*/
 
-            /* ##### Assegnazione <-- e operatori relazionali < <= >= > == != #### */
+             /*#### Assegnazione <-- e operatori relazionali < <= >= > == != #### */
             switch(state) {
                 case 9:
                     if (c =='<') {
-                        lessema = c;
+                        lessema = ""+c;
                         state=10;
                     } else {
                         state= 12; //impostarlo al prossimo case o pattern (switch) oppure riportarlo a zero in modo che ricominci dagli spazi
@@ -161,11 +160,11 @@ public class Lexer {
                     } else {
                         return new Token("notDefined", lessema); //Perchè se arriva fin qui, significa che nel lessema abbiamo <- ma non esiste un lessema <- quindi da errore
                     }
-                    break;
+                break;
 
                 case 12:
                     if(c == '>'){
-                        lessema=c;
+                        lessema=""+c;
                         state= 13;
                     }else{
                         state= 14;
@@ -183,7 +182,7 @@ public class Lexer {
 
                 case 14:
                     if(c == '='){
-                        lessema=c;
+                        lessema=""+c;
                         state=15;
                     }else{
                         state= 16;
@@ -201,7 +200,7 @@ public class Lexer {
 
                 case 16:
                     if(c=='!'){
-                        lessema=c;
+                        lessema=""+c;
                         state=17;
                     }else{
                         state=18;
@@ -223,7 +222,7 @@ public class Lexer {
                 case 18:
                     if(Character.isDigit(c)){
                         state = 19;
-                        lessema = c;
+                        lessema = ""+c;
                     }else{
                         return new Token ("notDefined");
                     }
@@ -234,7 +233,8 @@ public class Lexer {
                         lessema+=c;
                     }else{
                         retrack();
-                        return new Token("Number", lessema);
+                        SymbolTable.add(lessema);
+                        return new Token("NUM", listaStringhe.indexOf(lessema));
                     }
                     break;
             }
@@ -243,25 +243,26 @@ public class Lexer {
         }
 
     }
-    private Token installID(String lessema){
-        Token token;
+
+    private Token installID(String lessema) {
+        Token token=null;
         //Controllo se il lessema è una parola chiave
-        for(Token kw:keywords){
-            if(lessema.equals(kw.getName())){
+        for (Token kw : keywords) {
+            if (lessema.equals(kw.getName())) {
                 return kw;
-            }else{
-                token =  new Token("ID", lessema);
-                Tokentable.add(token);
+            } else {
+                SymbolTable.add(lessema);
+                token= new Token("ID",SymbolTable.indexOf(lessema))
                 return token;
             }
         }
+        return token;
+    }
 
-
-
-
-        private void retrack(){
+    private void retrack(){
             retrack = true;
         }
 
     }
+
 

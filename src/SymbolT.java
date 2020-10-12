@@ -1,8 +1,10 @@
-public class SymbolTable {
-    public String id;
-    public String attribute;
+import java.util.ArrayList;
 
-    public SymbolTable(String id, String attribute){
+public class SymbolT {
+   private String id;
+   private String attribute;
+
+    public SymbolT(String id,String attribute){
         this.id=id;
         this.attribute=attribute;
     }
@@ -23,7 +25,7 @@ public class SymbolTable {
 
     @Override
     public String toString() {
-        return "SymbolTable{" +
+        return "SymbolT{" +
                 "id='" + id + '\'' +
                 ", attribute='" + attribute + '\'' +
                 '}';

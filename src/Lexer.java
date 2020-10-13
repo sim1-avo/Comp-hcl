@@ -37,6 +37,7 @@ public class Lexer {
         int state=0;
         String lessema="";
 
+        //cambiare condizione while
         while ((r = reader.read()) != -1) {
 
             if (retrack == false) {
@@ -50,7 +51,7 @@ public class Lexer {
             //Spazio, tab, new line
             switch(state){
                 case 0:
-                    if (c != ' ' || c != '\n'){
+                    if (c != ' ' || c != '\n' || c!= '\t'){
                         state=1;
                         break;
                     }
@@ -224,7 +225,7 @@ public class Lexer {
                         state = 19;
                         lessema = ""+c;
                     }else{
-                        return new Token ("notDefined");
+                        return new Token ("notDefined", c);
                     }
                     break;
 
@@ -234,7 +235,7 @@ public class Lexer {
                     }else{
                         retrack();
                         SymbolTable.add(lessema);
-                        return new Token("NUM", listaStringhe.indexOf(lessema));
+                        return new Token("NUM", SymbolTable.indexOf(lessema));
                     }
                     break;
             }
@@ -261,7 +262,12 @@ public class Lexer {
 
     private void retrack(){
             retrack = true;
-        }
+    }
+
+    public Arraylist<String> getSymbolTable () {
+        return SymbolTable;
+    }
+
 
     }
 

@@ -283,9 +283,7 @@ public class Lexer {
         return SymbolTable;
     }
 
-    public String getProva() {
-        return "ciao";
-    }
+    
 
 
     }

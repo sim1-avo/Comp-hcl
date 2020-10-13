@@ -6,10 +6,10 @@ public class Tester {
     public static void main(String[] args) {
 
         String filePath = args[0];
-        System.out.println(filePath);
+
         try {
             Lexer lexicalAnalyzer = new Lexer(filePath);
-            System.out.println(lexicalAnalyzer.getProva());
+
             Token token;
             try {
                 int x=0;

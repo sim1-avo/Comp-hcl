@@ -22,7 +22,13 @@ public class Lexer {
         keywords.add(new Token("float","float"));
 
         retrack= false;
-        initialize(filename);
+        try {
+            initialize(filename);
+        }
+        catch (FileNotFoundException ex)
+        {
+            System.out.println("File non trovato");
+        }
 
     }
 
@@ -38,8 +44,8 @@ public class Lexer {
         String lessema="";
 
         //cambiare condizione while
-        while ((r = reader.read()) != -1) {
-
+        boolean condition=true;
+        while (condition) {
             if (retrack == false) {
                 r=reader.read();
             } else {
@@ -51,7 +57,7 @@ public class Lexer {
             //Spazio, tab, new line
             switch(state){
                 case 0:
-                    if (c != ' ' || c != '\n' || c!= '\t'){
+                    if (c != ' ' && c != '\n' && c!= '\t'){
                         state=1;
                         break;
                     }
@@ -161,7 +167,6 @@ public class Lexer {
                     } else {
                         return new Token("notDefined", lessema); //Perchè se arriva fin qui, significa che nel lessema abbiamo <- ma non esiste un lessema <- quindi da errore
                     }
-                break;
 
                 case 12:
                     if(c == '>'){
@@ -179,7 +184,6 @@ public class Lexer {
                     }else{
                         return new Token("relop","greater");
                     }
-                    break;
 
                 case 14:
                     if(c == '='){
@@ -197,7 +201,6 @@ public class Lexer {
                     }else{
                         return new Token("notDefined", lessema); //Non assegno = all'assegnazione poichè per l'assegnazione abbiamo usato <--
                     }
-                    break;
 
                 case 16:
                     if(c=='!'){
@@ -215,33 +218,47 @@ public class Lexer {
                     }else{
                         return new Token("notDefined", lessema);
                     }
-                    break;
             }
+            switch(state) {
+                case 18:
+                    if(r == -1) {
+                        return null;
+                    } else {
+                        state=19;
+                    }
+            }
+
 
             //Numeri
             switch(state){
-                case 18:
-                    if(Character.isDigit(c)){
-                        state = 19;
-                        lessema = ""+c;
-                    }else{
-                        return new Token ("notDefined", c);
-                    }
-                    break;
 
                 case 19:
                     if(Character.isDigit(c)){
+                        state = 20;
+                        lessema = ""+c;
+                        break;
+                    }else{
+                        return new Token ("notDefined", ""+c);
+                    }
+
+
+                case 20:
+                    if(Character.isDigit(c)){
                         lessema+=c;
+                        break;
                     }else{
                         retrack();
                         SymbolTable.add(lessema);
-                        return new Token("NUM", SymbolTable.indexOf(lessema));
+                        return new Token("NUM", ""+SymbolTable.indexOf(lessema));
                     }
-                    break;
+
+
+
             }
 
 
         }
+        return null;
 
     }
 
@@ -251,12 +268,10 @@ public class Lexer {
         for (Token kw : keywords) {
             if (lessema.equals(kw.getName())) {
                 return kw;
-            } else {
-                SymbolTable.add(lessema);
-                token= new Token("ID",SymbolTable.indexOf(lessema))
-                return token;
             }
         }
+        SymbolTable.add(lessema);
+        token= new Token("ID",String.valueOf(SymbolTable.indexOf(lessema)));
         return token;
     }
 
@@ -264,8 +279,12 @@ public class Lexer {
             retrack = true;
     }
 
-    public Arraylist<String> getSymbolTable () {
+    public ArrayList<String> getSymbolTable() {
         return SymbolTable;
+    }
+
+    public String getProva() {
+        return "ciao";
     }
 
 

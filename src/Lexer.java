@@ -3,13 +3,13 @@ import java.util.ArrayList;
 
 public class Lexer {
 
-    ArrayList<Token> keywords;
-    ArrayList<String> SymbolTable;
-    FileReader fileR;
-    Reader reader;
-    File file;
-    boolean retrack;
-    int r;
+    private ArrayList<Token> keywords;
+    private ArrayList<String> SymbolTable;
+    private FileReader fileR;
+    private Reader reader;
+    private File file;
+    private boolean retrack;
+    private int r;
 
     public Lexer(String filename) throws FileNotFoundException{
         SymbolTable= new ArrayList<String>();

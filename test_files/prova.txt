@@ -1,29 +1,6 @@
-000000006
-55              x56 simERTT
-xn
-55
-55
-0000000030
-xn
-0000008
-.
-!
-==
-<
->
->=
-<=
-!=
-<--
-1000
-if
-else
-then
-while
-float
-int main(){
-int w<--0;
-if(w==0){
-w<--3;}
+int main () {
+    int x <-- 0;
+    if(x == 0) {
+        x <-- 2;
+    }
 }
-

@@ -1,1 +1,18 @@
-int x <-- 10
+55              x56 simonegayERTT
+xnxx
+.
+!
+==
+<
+>
+>=
+<=
+!=
+<--
+1000
+if
+else
+then
+while
+float
+int

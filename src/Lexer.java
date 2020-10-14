@@ -75,6 +75,7 @@ public class Lexer {
                     state = 3;
                     break;
 
+
                 case 2:
                     if(Character.isLetterOrDigit(c)){
                         lessema += c;
@@ -90,6 +91,7 @@ public class Lexer {
 
             //Parentesi tonda aperta
             switch(state) {
+
                 case 3:
                     if (c =='(') return new Token ("leftPar");
                     else state=4;
@@ -140,68 +142,75 @@ public class Lexer {
              /*#### Assegnazione <-- e operatori relazionali < <= >= > == != #### */
             switch(state) {
                 case 9:
-                    if (c =='<') {
-                        lessema = ""+c;
-                        state=10;
+                    if (c == '<') {
+                        lessema = "" + c;
+                        state = 10;
                     } else {
-                        state= 12; //impostarlo al prossimo case o pattern (switch) oppure riportarlo a zero in modo che ricominci dagli spazi
+                        state = 12; //impostarlo al prossimo case o pattern (switch) oppure riportarlo a zero in modo che ricominci dagli spazi
                     }
                     break;
                 case 10:
-                    if(c == '-') {
-                        lessema+=c;
-                        state=11;
-                    }if(c == '='){
-                    lessema+=c;
-                    return new Token("relop","lessequal");
+                    if (c == '-') {
+                        lessema += c;
+                        state = 11;
+                    }
+                    if (c == '=') {
+                        lessema += c;
+                        return new Token("relop", "lessequal");
 
                     } else {
-                    if(c != '-') return new Token("relop","less");
+                        if (c != '-') return new Token("relop", "less");
                     }
-                break;
+                    break;
 
                 case 11:
-                    if(c == '-') {
-                        lessema+=c;
-                        return new Token("relop","assign");
+                    if (c == '-') {
+                        lessema += c;
+                        return new Token("relop", "assign");
                     } else {
                         return new Token("notDefined", lessema); //Perchè se arriva fin qui, significa che nel lessema abbiamo <- ma non esiste un lessema <- quindi da errore
                     }
+            }
 
+            switch (state) {
                 case 12:
-                    if(c == '>'){
-                        lessema=""+c;
-                        state= 13;
-                    }else{
-                        state= 14;
+                    if (c == '>') {
+                        lessema = "" + c;
+                        state = 13;
+                    } else {
+                        state = 14;
                     }
                     break;
 
                 case 13:
-                    if(c == '='){
-                        lessema+=c;
-                        return new Token("relop","greaterequal");
-                    }else{
-                        return new Token("relop","greater");
+                    if (c == '=') {
+                        lessema += c;
+                        return new Token("relop", "greaterequal");
+                    } else {
+                        return new Token("relop", "greater");
                     }
+            }
 
+            switch(state) {
                 case 14:
-                    if(c == '='){
-                        lessema=""+c;
-                        state=15;
-                    }else{
-                        state= 16;
+                    if (c == '=') {
+                        lessema = "" + c;
+                        state = 15;
+                    } else {
+                        state = 16;
                     }
                     break;
 
                 case 15:
-                    if(c=='='){
-                        lessema+=c;
-                        return new Token("relop","equal");
-                    }else{
+                    if (c == '=') {
+                        lessema += c;
+                        return new Token("relop", "equal");
+                    } else {
                         return new Token("notDefined", lessema); //Non assegno = all'assegnazione poichè per l'assegnazione abbiamo usato <--
                     }
+            }
 
+            switch(state) {
                 case 16:
                     if(c=='!'){
                         lessema=""+c;
@@ -219,6 +228,7 @@ public class Lexer {
                         return new Token("notDefined", lessema);
                     }
             }
+
             switch(state) {
                 case 18:
                     if(r == -1) {
@@ -231,7 +241,6 @@ public class Lexer {
 
             //Numeri
             switch(state){
-
                 case 19:
                     if(Character.isDigit(c)){
                         state = 20;

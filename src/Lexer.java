@@ -137,9 +137,9 @@ public class Lexer {
                     else state=9;
                     break;
             }
-             /*##### Fine separatori ####*/
+            /*##### Fine separatori ####*/
 
-             /*#### Assegnazione <-- e operatori relazionali < <= >= > == != #### */
+            /*#### Assegnazione <-- e operatori relazionali < <= >= > == != #### */
             switch(state) {
                 case 9:
                     if (c == '<') {
@@ -242,10 +242,16 @@ public class Lexer {
             //Numeri
             switch(state){
                 case 19:
-                    if(Character.isDigit(c)){
+                    if(Character.isDigit(c) && c!='0'){
                         state = 20;
                         lessema = ""+c;
                         break;
+                    }else if(Character.isDigit(c) && c=='0'){
+                        lessema= ""+c;
+                        state = 21;
+                        break;
+
+
                     }else{
                         return new Token ("notDefined", ""+c);
                     }
@@ -261,7 +267,22 @@ public class Lexer {
                         return new Token("NUM", ""+SymbolTable.lastIndexOf(lessema));
                     }
 
+                case 21:
+                    if(Character.isDigit(c) && c!='0') {
+                        lessema=""+c;
+                        state=20;
+                        break;
 
+                    }else if(Character.isDigit(c) && c=='0'){
+                        break;
+
+                    }
+                    else{
+                        retrack();
+                        SymbolTable.add(lessema);
+                        return new Token("NUM", ""+SymbolTable.lastIndexOf(lessema));
+
+                    }
 
 
 
@@ -287,8 +308,13 @@ public class Lexer {
             }
         }
         if(SymbolTable.contains(lessema)){
-            token= new Token("ERROR");
-            return token;
+            for(String s: SymbolTable){
+                if(s.equals(lessema)){
+                    token= new Token("ID",String.valueOf(SymbolTable.indexOf(lessema)));
+                    return token;
+                }
+            }
+
 
         }
         SymbolTable.add(lessema);
@@ -297,16 +323,16 @@ public class Lexer {
     }
 
     private void retrack(){
-            retrack = true;
+        retrack = true;
     }
 
     public ArrayList<String> getSymbolTable() {
         return SymbolTable;
     }
 
-    
 
 
-    }
+
+}
 
 

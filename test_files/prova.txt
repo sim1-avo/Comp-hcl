@@ -1,6 +1,9 @@
-int main () {
+int main () { aaaa
     int x <-- 0;
+    float y;
     if(x == 0) {
         x <-- 2;
+        y<-- 200;
+        =
     }
 }

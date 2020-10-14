@@ -54,10 +54,11 @@ public class Lexer {
 
             char c = (char) r;
 
+
             //Spazio, tab, new line
             switch(state){
                 case 0:
-                    if (c != ' ' && c != '\n' && c!= '\t'){
+                    if (c != ' ' && c != '\n' && c!= '\t' && c!= '\r'){
                         state=1;
                         break;
                     }

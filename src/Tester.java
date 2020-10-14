@@ -18,9 +18,11 @@ public class Tester {
                     x++;
                 }
                 ArrayList<String> symbolTable= lexicalAnalyzer.getSymbolTable();
+                System.out.println("\n\n____________Symbol Table___________");
                 for(int i=0; i<symbolTable.size();i++) {
-                    System.out.println(String.valueOf(i + " " + symbolTable.get(i)));
+                    System.out.println(String.valueOf("|\t"+i + " -> " + symbolTable.get(i)));
                 }
+                System.out.println("__________End Symbol Table_________");
             } catch (Exception e) {
                 e.printStackTrace();
             }

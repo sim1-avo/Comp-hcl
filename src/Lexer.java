@@ -258,8 +258,15 @@ public class Lexer {
                     }else{
                         retrack();
                         SymbolTable.add(lessema);
-                        return new Token("NUM", ""+SymbolTable.indexOf(lessema));
+                        return new Token("NUM", ""+SymbolTable.lastIndexOf(lessema));
                     }
+
+
+
+
+
+
+
 
 
 
@@ -278,6 +285,11 @@ public class Lexer {
             if (lessema.equals(kw.getName())) {
                 return kw;
             }
+        }
+        if(SymbolTable.contains(lessema)){
+            token= new Token("ERROR");
+            return token;
+
         }
         SymbolTable.add(lessema);
         token= new Token("ID",String.valueOf(SymbolTable.indexOf(lessema)));

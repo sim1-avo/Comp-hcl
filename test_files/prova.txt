@@ -1,5 +1,11 @@
-55              x56 simonegayERTT
-xnxx
+000000006
+55              x56 simERTT
+xn
+55
+55
+0000000030
+xn
+0000008
 .
 !
 ==
@@ -15,4 +21,9 @@ else
 then
 while
 float
-int
+int main(){
+int w<--0;
+if(w==0){
+w<--3;}
+}
+

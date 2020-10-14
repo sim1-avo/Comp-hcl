@@ -18,8 +18,8 @@ public class Tester {
                     x++;
                 }
                 ArrayList<String> symbolTable= lexicalAnalyzer.getSymbolTable();
-                for(String s: symbolTable) {
-                    System.out.println(String.valueOf(symbolTable.indexOf(s))+" "+s);
+                for(int i=0; i<symbolTable.size();i++) {
+                    System.out.println(String.valueOf(i + " " + symbolTable.get(i)));
                 }
             } catch (Exception e) {
                 e.printStackTrace();

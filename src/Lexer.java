@@ -173,7 +173,7 @@ public class Lexer {
                         return new Token("relop", "assign");
                     } else {
                         retrack();
-                        return new Token("notDefined", lessema); //Perchè se arriva fin qui, significa che nel lessema abbiamo <- ma non esiste un lessema <- quindi da errore
+                        return new Token("ERROR", lessema); //Perchè se arriva fin qui, significa che nel lessema abbiamo <- ma non esiste un lessema <- quindi da errore
                     }
             }
 
@@ -213,7 +213,7 @@ public class Lexer {
                         return new Token("relop", "equal");
                     } else {
                         retrack();
-                        return new Token("notDefined", lessema); //Non assegno = all'assegnazione poichè per l'assegnazione abbiamo usato <--
+                        return new Token("ERROR", lessema); //Non assegno = all'assegnazione poichè per l'assegnazione abbiamo usato <--
                     }
             }
 
@@ -233,7 +233,7 @@ public class Lexer {
                         return new Token("relop","notequal");
                     }else{
                         retrack();
-                        return new Token("notDefined", lessema);
+                        return new Token("ERROR", lessema);
                     }
             }
 
@@ -261,7 +261,7 @@ public class Lexer {
 
 
                     }else{
-                        return new Token ("notDefined", ""+c);
+                        return new Token ("ERROR", ""+c);
                     }
 
 

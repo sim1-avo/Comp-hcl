@@ -6,6 +6,8 @@ Il readme è suddiviso nelle seguenti sezioni:
     3. PAROLE CHIAVI E IDENTIFICATORI;
         a. GESTIONE CONFLITTO TRA PAROLE CHIAVI E IDENTIFICATORI;
     4. SEPARATORI;
+    5. OPERATORI RELAZIONALI;
+    6. CARATTERI NUMERICI.
 
 
 1. TABELLA DEI SIMBOLI
@@ -33,7 +35,7 @@ abbiamo utilizzato anche per le parole chiavi lo stesso diagramma degli identifi
 Gli identificati ritorneranno un token composto da classe a cui appartengono (ID) più l'id corrispondente nella tabella dei simboli (esempio 2a), mentre le parole chiavi ritorneranno un token non contenente il parametro aggiuntivo (esempio 2b)
     
     Esempio 3a
-Supponiamo di avere aggiunto nella tabella dei simboli 1 -> x,dove x è un identificatore, avremo che il token di x sarà (ID, "1").
+Supponiamo di aver aggiunto nella tabella dei simboli 1 -> x,dove x è un identificatore, avremo che il token di x sarà (ID, "1").
 
     Esempio 3b
 Supponiamo che il lessema sia la parola chiave 'else', avremo come token (ELSE).
@@ -49,6 +51,26 @@ Lessema -> token
    ,    -> (comma)
    ;    -> (stopInstruction)
 
+5. OPERATORI RELAZIONALI
+Per gli operatori relazionali è stato utilizzato un unico pattern per ogni operatore.
+ Lessema -> token
+    '<'  ->(relop, "less")
+    '>'  ->(relop, "greater")
+    '<=' ->(relop, "lessequal")
+    '>=' ->(relop, "greaterequal")
+    '==' ->(relop, "equal")
+    '!=' ->(relop, "notequal")
+    
+6. CARATTERI NUMERICI
+Per i caretteri numerici è stato deciso che facessero parte di questo pattern tutti i lessemi che iniziassero con un numero diverso da 0 (esempio 6a) oppure che il lessema sia il numero 0(esempio 6b). 
+Questa scelta è stata effettuata poichè potrebbero verificarsi lessemi che come carattere iniziale avessero 0 seguito da altri 0 (esempio 6c).
+ Esempio 6a. 
+        numero 70000 : rispetta il pattern poichè nonostante vi siano diversi zeri nel lessema, il primo non è uno zero, ottenendo ("NUM",70000);
+ Esempio 6b. 
+        numero 0: rispetta il pattern poichè il numero 0 da solo viene accettato, ottenendo ("NUM",0);
+ Esempio 6c. 
+        numero 0005: non rispetta il pattern poichè i primi 3 caratteri sono una sequenza di zeri, qunidi è stato deciso che il nostro lexer escludesse gli zeri iniziali e considerasse solo il numero 5, in modo da ottenere ("NUM",5);
+
 
 
 
@@ -56,6 +78,6 @@ Lessema -> token
 L'esercitazione 1 sul lexer è stata realizzata dagli studenti:
 
                         Mauro Gaetano                          Avolicino Simone                                                    
-                        g.mauro14@studenti.unisa.it            @studenti.unisa.it 
-                        matricola: 0522500909                  matricola:
+                        g.mauro14@studenti.unisa.it            s.avolicino@studenti.unisa.it 
+                        matricola: 0522500909                  matricola:0522500873
         

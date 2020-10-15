@@ -160,7 +160,10 @@ public class Lexer {
                         return new Token("relop", "lessequal");
 
                     } else {
-                        if (c != '-') return new Token("relop", "less");
+                        if (c != '-') {
+                            retrack();
+                            return new Token("relop", "less");
+                        }
                     }
                     break;
 
@@ -169,6 +172,7 @@ public class Lexer {
                         lessema += c;
                         return new Token("relop", "assign");
                     } else {
+                        retrack();
                         return new Token("notDefined", lessema); //Perchè se arriva fin qui, significa che nel lessema abbiamo <- ma non esiste un lessema <- quindi da errore
                     }
             }
@@ -188,6 +192,7 @@ public class Lexer {
                         lessema += c;
                         return new Token("relop", "greaterequal");
                     } else {
+                        retrack();
                         return new Token("relop", "greater");
                     }
             }
@@ -207,6 +212,7 @@ public class Lexer {
                         lessema += c;
                         return new Token("relop", "equal");
                     } else {
+                        retrack();
                         return new Token("notDefined", lessema); //Non assegno = all'assegnazione poichè per l'assegnazione abbiamo usato <--
                     }
             }
@@ -226,6 +232,7 @@ public class Lexer {
                         lessema+=c;
                         return new Token("relop","notequal");
                     }else{
+                        retrack();
                         return new Token("notDefined", lessema);
                     }
             }
@@ -284,13 +291,6 @@ public class Lexer {
                         return new Token("NUM", ""+SymbolTable.lastIndexOf(lessema));
 
                     }
-
-
-
-
-
-
-
 
             }
 

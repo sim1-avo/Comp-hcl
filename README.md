@@ -7,7 +7,8 @@ Il readme è suddiviso nelle seguenti sezioni:
         a. GESTIONE CONFLITTO TRA PAROLE CHIAVI E IDENTIFICATORI;
     4. SEPARATORI;
     5. OPERATORI RELAZIONALI;
-    6. CARATTERI NUMERICI.
+    6. CARATTERI NUMERICI(INT);
+    7. CARATTERI NUMERICI(FLOAT).
 
 
 1. TABELLA DEI SIMBOLI
@@ -61,8 +62,8 @@ Per gli operatori relazionali è stato utilizzato un unico pattern per ogni oper
     '==' ->(relop, "equal")
     '!=' ->(relop, "notequal")
     
-6. CARATTERI NUMERICI
-Per i caretteri numerici è stato deciso che facessero parte di questo pattern tutti i lessemi che iniziassero con un numero diverso da 0 (esempio 6a) oppure che il lessema sia il numero 0(esempio 6b). 
+6. CARATTERI NUMERICI(INT)
+Per questi caretteri numerici è stato deciso che facessero parte di questo pattern tutti i lessemi che iniziassero con un numero diverso da 0 (esempio 6a) oppure che il lessema sia il numero 0(esempio 6b). 
 Questa scelta è stata effettuata poichè potrebbero verificarsi lessemi che come carattere iniziale avessero 0 seguito da altri 0 (esempio 6c).
  Esempio 6a. 
         numero 70000 : rispetta il pattern poichè nonostante vi siano diversi zeri nel lessema, il primo non è uno zero, ottenendo ("NUM",70000);
@@ -70,6 +71,22 @@ Questa scelta è stata effettuata poichè potrebbero verificarsi lessemi che com
         numero 0: rispetta il pattern poichè il numero 0 da solo viene accettato, ottenendo ("NUM",0);
  Esempio 6c. 
         numero 0005: non rispetta il pattern poichè i primi 3 caratteri sono una sequenza di zeri, qunidi è stato deciso che il nostro lexer escludesse gli zeri iniziali e considerasse solo il numero 5, in modo da ottenere ("NUM",5);
+
+7. CARATTERI NUMERICI(FLOAT)
+Per questi caratteri numerici è stato deciso che facessero parte del pattern i lessemi che iniziassero un qualsiasi numero (numero !=0 e numero == 0). 
+Il carattere successivo al numero potrebbe essere un '.' che sta ad indicare l'inizio di un numero float.
+Se a seguire il punto sarà un numero diverso da 0 allora viene riconosciuto e aggiunto al lessema (esempio 7a).
+Se a seguire il punto sarà uno zero, continua a cercare i caratteri fino a trovare un numero diverso da 0 (esempio 7b), altrimenti se non si trova mai un carattere diverso da 0, il lessema sarà costituito solo dal numero prima del punto (esempio 7c).
+Infine se a seguire il punto sarà un altro punto, il lessema comprenderà solo il numero prima del punto (esempio 7d).
+
+esempio 7a.
+    1.22 -> (NUM, 1.22)
+esmpio 7b.
+    1.0004 -> (NUM, 1.0004)
+esempio 7c.
+    1.00000 -> (NUM, 1)
+esempio 7d.
+    1.. ->(NUM, 1)
 
 
 

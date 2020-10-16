@@ -42,6 +42,7 @@ public class Lexer {
     public Token nextToken()throws Exception{
         int state=0;
         String lessema="";
+        String temp="";
 
         //cambiare condizione while
         boolean condition=true;
@@ -266,10 +267,16 @@ public class Lexer {
 
 
                 case 20:
-                    if(Character.isDigit(c)){
+                    if(Character.isDigit(c)){ //aggiunto controllo sul numero decimale
                         lessema+=c;
                         break;
-                    }else{
+                    }if(c=='.'){
+                        temp=""+c;
+                        state=22;
+                        break;
+
+                    }
+                    else{
                         retrack();
                         SymbolTable.add(lessema);
                         return new Token("NUM", ""+SymbolTable.lastIndexOf(lessema));
@@ -281,7 +288,29 @@ public class Lexer {
                         state=20;
                         break;
 
-                    }else if(Character.isDigit(c) && c=='0'){
+                    }if(Character.isDigit(c) && c=='0'){
+                        break;
+
+                    }if(c=='.'){
+                    temp=""+c;
+                    state=22;
+                    break;
+
+                    }else{
+                        retrack();
+                        SymbolTable.add(lessema);
+                        return new Token("NUM", ""+SymbolTable.lastIndexOf(lessema));
+
+                    }
+                case 22: //numero dopo la virgola
+                    if(Character.isDigit(c) && c!='0' ){
+                        lessema+=temp;
+                        temp="";
+                        lessema+=c;
+                        break;
+                    }if(Character.isDigit(c) && c=='0'){
+                        temp+=c;
+                        state=23;
                         break;
 
                     }
@@ -289,8 +318,22 @@ public class Lexer {
                         retrack();
                         SymbolTable.add(lessema);
                         return new Token("NUM", ""+SymbolTable.lastIndexOf(lessema));
-
                     }
+                //Numero dopo il .0
+                case 23:
+                    if(Character.isDigit(c) && c!='0'){
+                        lessema+=temp;
+                        temp="";
+                        lessema+=c;
+                        break;
+                    }if(Character.isDigit(c) && c=='0'){
+                        temp+=c;
+                        break;
+                    }else{
+                        retrack();
+                        SymbolTable.add(lessema);
+                    return new Token("NUM", ""+SymbolTable.lastIndexOf(lessema));
+                }
 
             }
 

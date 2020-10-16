@@ -1,8 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Quarta Configurazione" type="Application" factoryName="Application">
+  <configuration default="false" name="Main test1" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
     <option name="MAIN_CLASS_NAME" value="Tester" />
     <module name="mauro-avolicino_es1_hcl" />
-    <option name="PROGRAM_PARAMETERS" value="test_files/test4.txt" />
+    <option name="PROGRAM_PARAMETERS" value="test_files/test1.txt" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

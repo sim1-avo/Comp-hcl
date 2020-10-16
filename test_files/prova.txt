@@ -1,4 +1,4 @@
-int main () { aaaa
+int main () {
     int x <-- 0;
     float y;
     if(x == 0) {

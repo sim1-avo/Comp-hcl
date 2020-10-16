@@ -8,8 +8,9 @@ public class Lexer {
     private FileReader fileR;
     private Reader reader;
     private File file;
-    private boolean retrack;
     private int r;
+    private int fileIndex;
+    private ArrayList charactersFile;
 
     public Lexer(String filename) throws FileNotFoundException{
         SymbolTable= new ArrayList<String>();
@@ -20,8 +21,7 @@ public class Lexer {
         keywords.add(new Token("then","then"));
         keywords.add(new Token("int","int"));
         keywords.add(new Token("float","float"));
-
-        retrack= false;
+        fileIndex=-1;
         try {
             initialize(filename);
         }
@@ -29,14 +29,24 @@ public class Lexer {
         {
             System.out.println("File non trovato");
         }
+        catch (Exception e) {
+            System.out.println(e);
+        }
 
     }
 
-    public void initialize(String f) throws FileNotFoundException {
+    public void initialize(String f) throws FileNotFoundException, Exception {
         file=new File(f);
         fileR= new FileReader(file);
         InputStream in = new FileInputStream(file);
         reader = new InputStreamReader(in);
+        charactersFile=new ArrayList ();
+
+        while ((r = reader.read()) != -1) {
+            charactersFile.add(r);
+        }
+        charactersFile.add(-1);
+
     }
 
     public Token nextToken()throws Exception{
@@ -44,16 +54,14 @@ public class Lexer {
         String lessema="";
         String temp="";
 
+
         //cambiare condizione while
         boolean condition=true;
         while (condition) {
-            if (retrack == false) {
-                r=reader.read();
-            } else {
-                retrack = false;
-            }
+            fileIndex++;
+            int int_to_char=(int) charactersFile.get(fileIndex);
+            char c = (char) int_to_char;
 
-            char c = (char) r;
 
 
             //Spazio, tab, new line
@@ -240,7 +248,7 @@ public class Lexer {
 
             switch(state) {
                 case 18:
-                    if(r == -1) {
+                    if(( (int) charactersFile.get(fileIndex)) == -1) {
                         return null;
                     } else {
                         state=19;
@@ -312,9 +320,9 @@ public class Lexer {
                         temp+=c;
                         state=23;
                         break;
-
                     }
                     else{
+                        if(temp.equals(".")) retrack();
                         retrack();
                         SymbolTable.add(lessema);
                         return new Token("NUM", ""+SymbolTable.lastIndexOf(lessema));
@@ -367,7 +375,7 @@ public class Lexer {
     }
 
     private void retrack(){
-        retrack = true;
+        this.fileIndex--;
     }
 
     public ArrayList<String> getSymbolTable() {
